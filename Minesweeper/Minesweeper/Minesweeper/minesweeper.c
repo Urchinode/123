@@ -4,35 +4,35 @@
 #include<time.h>
 #pragma warning(disable:4996)
 
-//ÃÊ±Þ 9x9 10 Áß±Þ16x16 40 °í±Þ 16x30 99
+//ì´ˆê¸‰ 9x9 10 ì¤‘ê¸‰16x16 40 ê³ ê¸‰ 16x30 99
 
-void InputDifficulty(char* dc); //³­ÀÌµµ¸¦ ÀÔ·Â¹ÞÀ½
-void SelectField(char* dc, char(*arr)[30]); //³­ÀÌµµ¿¡ ¸Â´Â ÇÊµå ¼±ÅÃ 
-void DrawField(char(*arr)[30], int row, int col, int m); //ÇÊµåÀÇ Áö·Ú À§Ä¡ ¼±Á¤ 
-int StartGame(char* dc, char(*arr)[30], char(*varr)[30], int len); //º»°ÝÀûÀ¸·Î °ÔÀÓ ½ÃÀÛ(ÄÜ¼Ö·Î ÀÔ·ÂÁÂÇ¥¸¦ ¹Þ¾Æ °á°ú¸¦ Ç¥½Ã) 
-void ViewField(char* dc, char(*varr)[30]); //°¡»ó ÇÊµå Ãâ·Â
-int UpdateField(char* dc, char(*arr)[30], char(*varr)[30], int x, int y); //°¡»ó ÇÊµå °»½Å 
-void Recursive(char(*arr)[30], char(*varr)[30], int x, int y, int row, int col); //ÁÂÇ¥°ª ÁÖº¯¿¡ Áö·Ú°¡ ¾øÀ¸¸é 
-int Compare(char* dc, char(*varr)[30]); //°¡»ó ÇÊµå¿¡ ¹àÇôÁöÁö ¾ÊÀº ÁÂÇ¥ °³¼ö°¡ ÇÊµåÀÇ Áö·Ú °³¼ö¿Í °°ÀºÁö ºñ±³(½Â¸®/½ÇÆÐ ¿©ºÎ)
-int Console(char* dc, char(*varr)[30], int x, int y); //³­ÀÌµµ¿¡ ¸Â°Ô ÀÔ·ÂÀÌ ÀûÀýÇÑÁö °Ë»ç 
+void InputDifficulty(char* dc); //ë‚œì´ë„ë¥¼ ìž…ë ¥ë°›ìŒ
+void SelectField(char* dc, char(*arr)[30]); //ë‚œì´ë„ì— ë§žëŠ” í•„ë“œ ì„ íƒ 
+void DrawField(char(*arr)[30], int row, int col, int m); //í•„ë“œì˜ ì§€ë¢° ìœ„ì¹˜ ì„ ì • 
+int StartGame(char* dc, char(*arr)[30], char(*varr)[30], int len); //ë³¸ê²©ì ìœ¼ë¡œ ê²Œìž„ ì‹œìž‘(ì½˜ì†”ë¡œ ìž…ë ¥ì¢Œí‘œë¥¼ ë°›ì•„ ê²°ê³¼ë¥¼ í‘œì‹œ) 
+void ViewField(char* dc, char(*varr)[30]); //ê°€ìƒ í•„ë“œ ì¶œë ¥
+int UpdateField(char* dc, char(*arr)[30], char(*varr)[30], int x, int y); //ê°€ìƒ í•„ë“œ ê°±ì‹  
+void Recursive(char(*arr)[30], char(*varr)[30], int x, int y, int row, int col); //ì¢Œí‘œê°’ ì£¼ë³€ì— ì§€ë¢°ê°€ ì—†ìœ¼ë©´ ì£¼ë³€ ì¢Œí‘œë„ ê°±ì‹ 
+int Compare(char* dc, char(*varr)[30]); //ê°€ìƒ í•„ë“œì— ë°í˜€ì§€ì§€ ì•Šì€ ì¢Œí‘œ ê°œìˆ˜ê°€ í•„ë“œì˜ ì§€ë¢° ê°œìˆ˜ì™€ ê°™ì€ì§€ ë¹„êµ(ìŠ¹ë¦¬/ì‹¤íŒ¨ ì—¬ë¶€)
+int Console(char* dc, char(*varr)[30], int x, int y); //ë‚œì´ë„ì— ë§žê²Œ ìž…ë ¥ì´ ì ì ˆí•œì§€ ê²€ì‚¬ 
 int main(void)
 {
-	char dc = 0; // ³­ÀÌµµ ÀÔ·Â¹Þ´Â º¯¼ö 
+	char dc = 0; // ë‚œì´ë„ ìž…ë ¥ë°›ëŠ” ë³€ìˆ˜ 
 	char f[16][30] = { 0 };
-	char vf[16][30] = { 0 }; //°¡»ó ÇÊµå: »ý¼ºµÈ ÇÊµå¸¦ ?·Î µ¤Àº ÇÊµå -> ÀÔ·ÂÀ» ¹ÞÀ¸¸é f¹è¿­·ÎºÎÅÍ °ªÀ» ´ëÀÔ 
-	// unionÀ¸·Î ÇÒ¼öÀÖ´Â ¹æ¹ý ¾øÀ»±î? -> memset -> ´çÀå ÃÊ±âÈ­ÇÏ´Â°Ç °¡´ÉÇÑµ¥ ÀÔ·ÂÇÒ¶§ ¹®Á¦°¡ »ý±æ°Å°°´Ù 
+	char vf[16][30] = { 0 }; //ê°€ìƒ í•„ë“œ: ìƒì„±ëœ í•„ë“œë¥¼ ?ë¡œ ë®ì€ í•„ë“œ -> ìž…ë ¥ì„ ë°›ìœ¼ë©´ fë°°ì—´ë¡œë¶€í„° ê°’ì„ ëŒ€ìž… 
+	// unionìœ¼ë¡œ í• ìˆ˜ìžˆëŠ” ë°©ë²• ì—†ì„ê¹Œ? -> memset -> ë‹¹ìž¥ ì´ˆê¸°í™”í•˜ëŠ”ê±´ ê°€ëŠ¥í•œë° ìž…ë ¥í• ë•Œ ë¬¸ì œê°€ ìƒê¸¸ê±°ê°™ë‹¤ 
 	int i = 0, j = 0, result;
 	clock_t start, end;
 	srand((unsigned)time(NULL));
-	memset(vf, 63, sizeof(vf)); //°¡»óÇÊµå ?·Î Ã¤¿ì±â 
+	memset(vf, 63, sizeof(vf)); //ê°€ìƒí•„ë“œ ?ë¡œ ì±„ìš°ê¸° 
 	InputDifficulty(&dc);
 	system("cls");
 	SelectField(&dc, f);
 	start = clock();
 	result = StartGame(&dc, f, vf, sizeof(vf));
 	end = clock();
-	if (result == 1)printf("ÆÐ¹è....\n");
-	else printf("½Â¸®!!!\n");
+	if (result == 1)printf("íŒ¨ë°°....\n");
+	else printf("ìŠ¹ë¦¬!!!\n");
 	system("pause>nul");
 	return 0;
 }
@@ -41,14 +41,14 @@ void InputDifficulty(char* dc)
 {
 	printf("*******MINESWEEPER*******\n");
 	while (!*dc) {
-		printf("³­ÀÌµµ¸¦ ¼³Á¤ÇØÁÖ¼¼¿ä E:ÃÊ±Þ I:Áß±Þ H:°í±Þ\n");
+		printf("ë‚œì´ë„ë¥¼ ì„¤ì •í•´ì£¼ì„¸ìš” E:ì´ˆê¸‰ I:ì¤‘ê¸‰ H:ê³ ê¸‰\n");
 		*dc = getchar();
-		rewind(stdin); //¹Ýº¹ ÀÔ·Â½Ã °ø¹éÃ³¸® 
+		rewind(stdin); //ë°˜ë³µ ìž…ë ¥ì‹œ ê³µë°±ì²˜ë¦¬ 
 		if (*dc == 'e' || *dc == 'E') *dc = 'E';
 		else if (*dc == 'i' || *dc == 'I') *dc = 'I';
 		else if (*dc == 'h' || *dc == 'H') *dc = 'H';
 		else {
-			printf("¿Ã¹Ù¸¥ ÀÔ·ÂÀÌ ¾Æ´Õ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä\n"); // ¿Ã¹Ù¸¥ ÀÔ·ÂÀ» ¹ÞÀ»¶§±îÁö ¹Ýº¹ 
+			printf("ì˜¬ë°”ë¥¸ ìž…ë ¥ì´ ì•„ë‹™ë‹ˆë‹¤. ë‹¤ì‹œ ìž…ë ¥í•˜ì„¸ìš”\n"); // ì˜¬ë°”ë¥¸ ìž…ë ¥ì„ ë°›ì„ë•Œê¹Œì§€ ë°˜ë³µ 
 			*dc = 0; //????
 		}
 	}
@@ -56,7 +56,7 @@ void InputDifficulty(char* dc)
 
 void SelectField(char* dc, char(*arr)[30])
 {
-	switch (*dc) //ÇÊµå ¼±ÅÃ 
+	switch (*dc) //í•„ë“œ ì„ íƒ 
 	{
 	case 'E':
 		DrawField(arr, 9, 9, 10);
@@ -72,15 +72,15 @@ void SelectField(char* dc, char(*arr)[30])
 void DrawField(char(*arr)[30], int row, int col, int m)
 {
 	int i = 0, j = 0;
-	int r, c; //Áö·Ú À§Ä¡ ·£´ý 
+	int r, c; //ì§€ë¢° ìœ„ì¹˜ ëžœë¤ 
 	while (m--) {
 		r = rand() % row;
 		c = rand() % col;
 		if (arr[r][c] == '@') {
-			m++; //ÀÌ¹Ì Áö·Ú°¡ ÀÖÀ¸¸é ¹Ýº¹¹® ´Ù½Ã ½ÇÇà 
+			m++; //ì´ë¯¸ ì§€ë¢°ê°€ ìžˆìœ¼ë©´ ë°˜ë³µë¬¸ ë‹¤ì‹œ ì‹¤í–‰ 
 			continue;
 		}
-		arr[r][c] = '@'; //Áö·Ú Âï±â 
+		arr[r][c] = '@'; //ì§€ë¢° ì°ê¸° 
 		if (r >= 1 && c >= 1)
 			if (arr[r - 1][c - 1] != '@') arr[r - 1][c - 1] += 1;
 		if (r <= row - 2 && c <= col - 2)
@@ -96,33 +96,33 @@ void DrawField(char(*arr)[30], int row, int col, int m)
 		if (r <= row - 2)
 			if (arr[r + 1][c] != '@')arr[r + 1][c] += 1;
 		if (c <= col - 2)
-			if (arr[r][c + 1] != '@')arr[r][c + 1] += 1; //Áö·Ú ÁÖº¯¿¡ 1´õÇØÁÖ±â
+			if (arr[r][c + 1] != '@')arr[r][c + 1] += 1; //ì§€ë¢° ì£¼ë³€ì— 1ë”í•´ì£¼ê¸°
 	}
 }
 int StartGame(char* dc, char(*arr)[30], char(*varr)[30], int len) {
 	int x, y; //Console
-	int result = 0; //½ÂÆÐ °á°ú	
-	printf("°ÔÀÓÀÌ ½ÃÀÛµÇ¾ú½À´Ï´Ù. Áö·Ú¸¦ ÅÍÆ®¸®Áö ¾Ê°í ¸ðµç ¿µ¿ªÀ» ¹àÇôº¸¼¼¿ä.\n");
-	printf("ÁÂÇ¥¸¦ ÀÔ·ÂÇÏ¸é¼­ ¿µ¿ªÀ» ¹àÈ÷¸é µË´Ï´Ù.\n");
-	printf("xÇà y¿­À» ÀÔ·ÂÇÏ°í ½ÍÀ¸¸é ""x y""Çü½ÄÀ¸·Î ÀÔ·ÂÇÏ¼¼¿ä.\n\n");
+	int result = 0; //ìŠ¹íŒ¨ ê²°ê³¼	
+	printf("ê²Œìž„ì´ ì‹œìž‘ë˜ì—ˆìŠµë‹ˆë‹¤. ì§€ë¢°ë¥¼ í„°íŠ¸ë¦¬ì§€ ì•Šê³  ëª¨ë“  ì˜ì—­ì„ ë°í˜€ë³´ì„¸ìš”.\n");
+	printf("ì¢Œí‘œë¥¼ ìž…ë ¥í•˜ë©´ì„œ ì˜ì—­ì„ ë°ížˆë©´ ë©ë‹ˆë‹¤.\n");
+	printf("xí–‰ yì—´ì„ ìž…ë ¥í•˜ê³  ì‹¶ìœ¼ë©´ ""x y""í˜•ì‹ìœ¼ë¡œ ìž…ë ¥í•˜ì„¸ìš”.\n\n");
 	do {
 		ViewField(dc, varr);
-		if (result == 1) return result; //Áö·Ú ´©¸£¸é °­Á¦Á¾·á
-		while (1) {	 //ÁÂÇ¥ ÀÔ·Â 
-			printf("ÁÂÇ¥¸¦ ÀÔ·ÂÇÏ¼¼¿ä:");
+		if (result == 1) return result; //ì§€ë¢° ëˆ„ë¥´ë©´ ê°•ì œì¢…ë£Œ
+		while (1) {	 //ì¢Œí‘œ ìž…ë ¥ 
+			printf("ì¢Œí‘œë¥¼ ìž…ë ¥í•˜ì„¸ìš”:");
 			scanf("%d %d", &x, &y);
-			if (Console(dc, varr, x, y) == 2) break; //ÇÊµå ¹üÀ§¸¦ ³Ñ¾î¼­¸é ´Ù½Ã ÀÔ·Â 
+			if (Console(dc, varr, x, y) == 2) break; //í•„ë“œ ë²”ìœ„ë¥¼ ë„˜ì–´ì„œë©´ ë‹¤ì‹œ ìž…ë ¥ 
 		}
 		system("cls");
 		result = UpdateField(dc, arr, varr, x, y);
 	} while (Compare(dc, varr));
-	return 2; //½Â¸®
+	return 2; //ìŠ¹ë¦¬
 }
 
-void ViewField(char* dc, char(*varr)[30]) { //°¡»óÇÊµå Ãâ·Â 
+void ViewField(char* dc, char(*varr)[30]) { //ê°€ìƒí•„ë“œ ì¶œë ¥ 
 	int row = 0, col = 0;
 	int i, j;
-	switch (*dc) //³­ÀÌµµ¿¡ ¸Â´Â Çà/¿­ °áÁ¤ 
+	switch (*dc) //ë‚œì´ë„ì— ë§žëŠ” í–‰/ì—´ ê²°ì • 
 	{
 	case 'E':
 		row = 9; col = 9;
@@ -149,7 +149,7 @@ void ViewField(char* dc, char(*varr)[30]) { //°¡»óÇÊµå Ãâ·Â
 	}
 }
 
-int UpdateField(char* dc, char(*arr)[30], char(*varr)[30], int x, int y) { //ÀÔ·Â ÁÂÇ¥¿¡ Áö·Ú ÀÖÀ¸¸é 1À» ¹ÝÈ¯ÇØ¼­ °­Á¦Á¾·á 
+int UpdateField(char* dc, char(*arr)[30], char(*varr)[30], int x, int y) { //ìž…ë ¥ ì¢Œí‘œì— ì§€ë¢° ìžˆìœ¼ë©´ 1ì„ ë°˜í™˜í•´ì„œ ê°•ì œì¢…ë£Œ 
 	int row = 0, col = 0, i, j;
 	switch (*dc)
 	{
@@ -175,9 +175,9 @@ int UpdateField(char* dc, char(*arr)[30], char(*varr)[30], int x, int y) { //ÀÔ·
 	return 2;
 }
 void Recursive(char(*arr)[30], char(*varr)[30], int x, int y, int row, int col) {
-	if (varr[x][y] != '?'); // ÀÌ¹Ì ¹àÇôÁø ¿µ¿ªÀÌ¸é Àç±ÍÃ³¸® ¸éÁ¦
-	else if (varr[x][y] == '?' && arr[x][y] != '\0') varr[x][y] = arr[x][y]; //ÁÂÇ¥°ªÀÌ 0ÀÌ ¾Æ´Ï¸é ÁÂÇ¥°ª¸¸ ´ëÀÔ
-	else if (varr[x][y] == '?' && arr[x][y] == '\0') { //ÁÂÇ¥°ªÀÌ 0ÀÏ¶§(ÁÖº¯¿¡ Áö·Ú°¡ ¾øÀ¸¸é) ÁÖº¯ ÁÂÇ¥µéÀ» Àç±ÍÃ³¸®(ÁÖº¯ ÁÂÇ¥µµ ´ëÀÔ)
+	if (varr[x][y] != '?'); // ì´ë¯¸ ë°í˜€ì§„ ì˜ì—­ì´ë©´ ìž¬ê·€ì²˜ë¦¬ ë©´ì œ
+	else if (varr[x][y] == '?' && arr[x][y] != '\0') varr[x][y] = arr[x][y]; //ì¢Œí‘œê°’ì´ 0ì´ ì•„ë‹ˆë©´ ì¢Œí‘œê°’ë§Œ ëŒ€ìž…
+	else if (varr[x][y] == '?' && arr[x][y] == '\0') { //ì¢Œí‘œê°’ì´ 0ì¼ë•Œ(ì£¼ë³€ì— ì§€ë¢°ê°€ ì—†ìœ¼ë©´) ì£¼ë³€ ì¢Œí‘œë“¤ì„ ìž¬ê·€ì²˜ë¦¬(ì£¼ë³€ ì¢Œí‘œë„ ëŒ€ìž…)
 		varr[x][y] = arr[x][y];
 		if (x >= 1 && y >= 1) {
 			Recursive(arr, varr, x - 1, y - 1, row, col);
@@ -245,7 +245,7 @@ int Compare(char* dc, char(*varr)[30]) {
 }
 int Console(char* dc, char(*varr)[30], int x, int y) {
 	int row = 0, col = 0;
-	switch (*dc) //³­ÀÌµµ¿¡ ¸Â´Â Çà/¿­ °áÁ¤ 
+	switch (*dc) //ë‚œì´ë„ì— ë§žëŠ” í–‰/ì—´ ê²°ì • 
 	{
 	case 'E':
 		row = 9; col = 9;
@@ -258,12 +258,12 @@ int Console(char* dc, char(*varr)[30], int x, int y) {
 		break;
 	}
 	if (!(x >= 0 && x < row && y >= 0 && y < col)) {
-		printf("ÀÔ·Â ¹üÀ§°¡ ¸ÂÁö ¾Ê½À´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.\n\n");
+		printf("ìž…ë ¥ ë²”ìœ„ê°€ ë§žì§€ ì•ŠìŠµë‹ˆë‹¤. ë‹¤ì‹œ ìž…ë ¥í•´ì£¼ì„¸ìš”.\n\n");
 		rewind(stdin);
 		return 1;
 	}
 	else if (varr[x][y] != '?') {
-		printf("\nÀÌ¹Ì ¹àÇôÁø ¿µ¿ªÀÔ´Ï´Ù. ´Ù¸¥ ÁÂÇ¥·Î ÀÔ·ÂÇÏ¼¼¿ä.\n\n");
+		printf("\nì´ë¯¸ ë°í˜€ì§„ ì˜ì—­ìž…ë‹ˆë‹¤. ë‹¤ë¥¸ ì¢Œí‘œë¡œ ìž…ë ¥í•˜ì„¸ìš”.\n\n");
 		rewind(stdin);
 		return 1;
 	}
